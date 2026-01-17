@@ -6,4 +6,5 @@ from django.views import View
 
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest):
-        return render(request, "a_users/profile.html")
+        profile = request.user.profile
+        return render(request, "a_users/profile.html", context={"profile": profile})
