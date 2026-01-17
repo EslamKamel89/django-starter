@@ -23,9 +23,9 @@
         >
           <img
             class="h-8 w-8 rounded-full object-cover border border-neutral"
-            src=""
+            src="{{ user.profile.avatar_url }}"
           />
-          <span class="font-semibold">Username</span>
+          <span class="font-semibold">{{user.profile.name}}</span>
           <img
             x-bind:class="dropdownOpen && 'rotate-180 duration-300'"
             class="w-4 opacity-80"

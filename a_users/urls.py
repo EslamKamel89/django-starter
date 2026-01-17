@@ -1,3 +1,7 @@
-from django.urls import URLPattern
+from django.urls import URLPattern, path
 
-urlpatterns: list[URLPattern] = []
+from . import views
+
+urlpatterns: list[URLPattern] = [
+    path("profile", views.ProfileView.as_view(), name="my-profile")
+]
