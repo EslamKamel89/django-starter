@@ -1,16 +1,23 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.http import HttpRequest
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
 
 from a_users.forms import ProfileForm
 
 
-class ProfileView(LoginRequiredMixin, View):
-    def get(self, request: HttpRequest):
-        profile = request.user.profile  # type: ignore
+class ProfileView(View):
+    def get(self, request: HttpRequest, username: str | None = None):
+        if username:
+            profile = get_object_or_404(User, username=username).profile  # type: ignore
+        else:
+            try:
+                profile = request.user.profile  # type: ignore
+            except:
+                return redirect(reverse("account_login"))
         return render(request, "a_users/profile.html", context={"profile": profile})
 
 
