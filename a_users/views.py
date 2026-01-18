@@ -44,3 +44,8 @@ class ProfileEditView(LoginRequiredMixin, View):
             return redirect(reverse("my-profile"))
         messages.error(request, "Please fix the validation error")
         return render(request, "a_users/profile-edit.html", context={"form": form})
+
+
+class ProfileSettingsView(LoginRequiredMixin, View):
+    def get(self, request: HttpRequest):
+        return render(request, "a_users/profile-settings.html")

@@ -1,0 +1,57 @@
+<!--prettier-ignore-->
+{% extends 'layouts/box.html' %}
+
+{% block content %}
+
+<h1 class="mb-8">Account Settings</h1>
+
+<table class="w-full text-sm text-left">
+  <tbody class="divide-y divide-neutral-200">
+    <!-- Email -->
+    <tr>
+      <th scope="row" class="pt-4 pb-1 text-base font-bold text-neutral-900">
+        Email address
+      </th>
+      <td id="email-address" class="pt-4 pb-1 px-6 text-neutral-700">
+        {% if user.email %}{{ user.email }}{% else %}No Email{% endif %}
+      </td>
+      <td class="pt-4 pb-1 px-6 text-right">
+        <a href="" class="text-primary font-semibold hover:underline"> Edit </a>
+      </td>
+    </tr>
+
+    <!-- Verification -->
+    <tr>
+      <th scope="row" class="pb-4"></th>
+      <td class="px-6 pb-4">
+        {% if user.emailaddress_set.first.verified %}
+        <span class="text-success font-semibold">Verified</span>
+        {% else %}
+        <span class="text-warning font-semibold">Not verified</span>
+        {% endif %}
+      </td>
+      <td class="px-6 pb-4 text-right">
+        {% if not user.emailaddress_set.first.verified %}
+        <a href="" class="text-accent font-semibold hover:underline">
+          Verify
+        </a>
+        {% endif %}
+      </td>
+    </tr>
+
+    <!-- Delete -->
+    <tr>
+      <th scope="row" class="py-4 text-base font-bold text-neutral-900">
+        Delete Account
+      </th>
+      <td class="px-6 py-4 text-neutral-700">
+        Once deleted, account is gone forever.
+      </td>
+      <td class="px-6 py-4 text-right">
+        <a href="" class="text-error font-semibold hover:underline"> Delete </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}
