@@ -1,12 +1,13 @@
 <!--prettier-ignore-->
 {% extends 'layouts/blank.html' %}
 
+{% load crispy_forms_tags %}
 {% block content %}
 
 <div
   class="max-w-xl mx-auto pt-16 px-4"
   x-data="{
-    avatarUrl: '{{ user.profile.avatar }}',
+    avatarUrl: '{{ user.profile.avatar_url }}',
     displayName: '{{ user.profile.displayname|default:'' }}',
     previewAvatar(event) {
       const file = event.target.files[0]
