@@ -53,7 +53,18 @@ class ProfileSettingsView(LoginRequiredMixin, View):
 
 class EmailChangeView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest):
-        if request.htmx:
-            form = EmailForm(instance=request.user)
+        if request.htmx:  # type: ignore
+            form = EmailForm(instance=request.user)  # type: ignore
             return render(request, "a_users/partials/email-form.html", {"form": form})
         return redirect(reverse("home"))
+
+    def post(self, request: HttpRequest):
+        print("user", request.user)
+        print("post", request.POST)
+        form = EmailForm(instance=request.user, data=request.POST)  # type: ignore
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Email updated successfully")
+            return redirect(reverse("profile-settings"))
+        messages.error(request, "Please fix the validation error")
+        return render(request, "a_users/partials/email-form.html", {"form": form})
