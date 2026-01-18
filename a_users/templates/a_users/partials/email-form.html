@@ -2,17 +2,15 @@
 <!--prettier-ignore-->
 {% load crispy_forms_tags %}
 
-<div class="bg-neutral p-4 rounded-xl border border-neutral-300 w-full">
-  <form action="" method="post" autocomplete="off" class="flex flex-col gap-4">
-    {% csrf_token %} {% crispy form %}
-
-    <div class="flex gap-2 pt-2 w-full">
-      <button type="submit">Save</button>
-
+<div class="bg-gray-50 p-4 rounded-xl border border-neutral-300 w-full">
+  <form action="" method="post" autocomplete="off" class="flex w-full gap-4">
+    <div class="w-full flex-5">{% crispy form %}</div>
+    <div class="flex gap-2 pt-2 w-fit items-center">
+      <button class="!px-2" type="submit">Save</button>
       <a
         id="email-edit"
         href="{% url 'profile-settings' %}"
-        class="button gray cursor-pointer bg-red-500"
+        class="button !px-2 gray cursor-pointer bg-red-500 flex items-center justify-center"
       >
         Cancel
       </a>
