@@ -12,7 +12,10 @@
     <ul class="navitems flex items-center gap-2 h-full">
       {% if request.user.is_authenticated %}
       <li>
-        <a href="/" class="text-white">Home</a>
+        <a href="/" class="text-white flex items-center gap-2">
+          <i class="bi bi-house-door"></i>
+          <span>Home</span>
+        </a>
       </li>
 
       <li x-data="{ dropdownOpen: false }" class="relative">
@@ -25,28 +28,51 @@
             class="h-8 w-8 rounded-full object-cover border border-neutral"
             src="{{ user.profile.avatar_url }}"
           />
-          <span class="font-semibold">{{user.profile.name}}</span>
-          <img
-            x-bind:class="dropdownOpen && 'rotate-180 duration-300'"
-            class="w-4 opacity-80"
-            src="https://img.icons8.com/small/32/ffffff/expand-arrow.png"
-          />
+          <span class="font-semibold">{{ user.profile.name }}</span>
+          <i
+            class="bi bi-chevron-down transition-transform duration-300"
+            :class="dropdownOpen && 'rotate-180'"
+          ></i>
         </a>
 
         <div
           x-show="dropdownOpen"
           x-cloak
-          class="absolute right-0 mt-2 bg-white text-neutral-800 shadow-lg rounded-lg w-44 p-2 border border-neutral z-20"
+          class="absolute right-0 mt-2 bg-white text-neutral-800 shadow-lg rounded-lg w-48 p-2 border border-neutral z-20"
           x-transition:enter="duration-300 ease-out"
           x-transition:enter-start="opacity-0 -translate-y-3 scale-95"
           x-transition:enter-end="opacity-100 translate-y-0 scale-100"
         >
-          <ul class="hoverlist [&>li>a]:justify-end">
-            <li><a href="{% url 'my-profile' %}">My Profile</a></li>
-            <li><a href="">Edit Profile</a></li>
-            <li><a href="">Settings</a></li>
+          <ul class="hoverlist w-full">
             <li>
-              <a href="" class="text-error font-semibold">Log Out</a>
+              <a href="{% url 'my-profile' %}" class="flex items-center gap-2">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="{% url 'my-profile-edit' %}"
+                class="flex items-center gap-2"
+              >
+                <i class="bi bi-pencil-square"></i>
+                <span>Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="" class="flex items-center gap-2">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href=""
+                class="text-error font-semibold flex items-center gap-2"
+              >
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Log Out</span>
+              </a>
             </li>
           </ul>
         </div>
@@ -54,10 +80,19 @@
 
       {% else %}
       <li>
-        <a href="" class="text-white">Login</a>
+        <a href="" class="text-white flex items-center gap-2">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Login</span>
+        </a>
       </li>
       <li>
-        <a href="" class="button bg-accent text-neutral-900">Signup</a>
+        <a
+          href=""
+          class="button bg-accent text-neutral-900 flex items-center gap-2"
+        >
+          <i class="bi bi-person-plus"></i>
+          <span>Signup</span>
+        </a>
       </li>
       {% endif %}
     </ul>
