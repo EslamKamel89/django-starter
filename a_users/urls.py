@@ -11,4 +11,9 @@ urlpatterns: list[URLPattern] = [
     path(
         "profile/settings", views.ProfileSettingsView.as_view(), name="profile-settings"
     ),
+    path(
+        "profile/email-change",
+        views.EmailChangeView.as_view(),
+        name="email-change",
+    ),
 ]

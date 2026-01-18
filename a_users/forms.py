@@ -1,6 +1,7 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Field, Layout, Submit
 from django import forms
+from django.contrib.auth.models import User
 
 from a_users.models import Profile
 
@@ -37,3 +38,22 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ("image", "display_name", "info")
+
+
+class EmailForm(forms.ModelForm):
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.helper = FormHelper(self)
+    #     self.helper.form_method = "POST"
+    #     self.helper.form_class = "space-y-4 max-w-lg mx-auto"
+    #     self.helper.layout = Layout(
+    #         Field(
+    #             "email",
+    #             css_class=INPUT_STYLES,
+    #         ),
+    #         Submit("submit", "Save Profile", css_class=SUBMIT_STYLES),
+    #     )
+
+    class Meta:
+        model = User
+        fields = ("email",)

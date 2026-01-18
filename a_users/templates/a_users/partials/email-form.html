@@ -1,0 +1,21 @@
+<!-- a_users/templates/a_users/partials/email-form.html -->
+<!--prettier-ignore-->
+{% load crispy_forms_tags %}
+
+<div class="bg-neutral p-4 rounded-xl border border-neutral-300 w-full">
+  <form action="" method="post" autocomplete="off" class="flex flex-col gap-4">
+    {% csrf_token %} {% crispy form %}
+
+    <div class="flex gap-2 pt-2 w-full">
+      <button type="submit">Save</button>
+
+      <a
+        id="email-edit"
+        href="{% url 'profile-settings' %}"
+        class="button gray cursor-pointer bg-red-500"
+      >
+        Cancel
+      </a>
+    </div>
+  </form>
+</div>

@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
 
-from a_users.forms import ProfileForm
+from a_users.forms import EmailForm, ProfileForm
 
 
 class ProfileView(View):
@@ -49,3 +49,11 @@ class ProfileEditView(LoginRequiredMixin, View):
 class ProfileSettingsView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest):
         return render(request, "a_users/profile-settings.html")
+
+
+class EmailChangeView(LoginRequiredMixin, View):
+    def get(self, request: HttpRequest):
+        if request.htmx:
+            form = EmailForm(instance=request.user)
+            return render(request, "a_users/partials/email-form.html", {"form": form})
+        return redirect(reverse("home"))
