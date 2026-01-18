@@ -22,7 +22,7 @@
     <title>{% block title %} {% endblock %}</title>
     {% block css %} {% endblock %}
   </head>
-  <body>
+  <body class="{% block class %}{% endblock %}">
     {% include 'partials/navbar.html' %}
 
     <content class="block w-full">
