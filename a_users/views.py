@@ -18,7 +18,15 @@ class ProfileEditView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest):
         profile = request.user.profile  # type: ignore
         form = ProfileForm(instance=profile)
-        return render(request, "a_users/profile-edit.html", context={"form": form})
+        if request.path == reverse("profile-onboarding"):
+            onboarding = True
+        else:
+            onboarding = False
+        return render(
+            request,
+            "a_users/profile-edit.html",
+            context={"form": form, "onboarding": onboarding},
+        )
 
     def post(self, request: HttpRequest):
         profile = request.user.profile  # type: ignore
