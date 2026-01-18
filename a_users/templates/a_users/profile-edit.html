@@ -1,0 +1,64 @@
+<!--prettier-ignore-->
+{% extends 'layouts/blank.html' %}
+
+{% block content %}
+
+<div
+  class="max-w-xl mx-auto pt-16 px-4"
+  x-data="{
+    avatarUrl: '{{ user.profile.avatar }}',
+    displayName: '{{ user.profile.displayname|default:'' }}',
+    previewAvatar(event) {
+      const file = event.target.files[0]
+      if (file && file.type.includes('image')) {
+        this.avatarUrl = URL.createObjectURL(file)
+      }
+    }
+  }"
+>
+  <h1 class="mb-8 text-center">Edit your Profile</h1>
+
+  <!-- Profile Preview -->
+  <div class="flex flex-col items-center text-center mb-10">
+    <img
+      :src="avatarUrl"
+      class="w-36 h-36 rounded-full object-cover border-4 border-primary bg-neutral mb-4"
+    />
+
+    <div class="max-w-md">
+      <h1 x-text="displayName" class="mb-1"></h1>
+      <div class="text-muted font-medium -mt-2">@{{ user.username }}</div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <form method="POST" enctype="multipart/form-data" class="space-y-6">
+    {% csrf_token %}
+
+    <!-- Avatar -->
+    <div>
+      <input type="file" name="avatar" @change="previewAvatar" />
+    </div>
+
+    <!-- Display Name -->
+    <div>
+      <input
+        type="text"
+        name="displayname"
+        id="id_displayname"
+        placeholder="Display name"
+        x-model="displayName"
+      />
+    </div>
+
+    <!-- Other fields -->
+    {{ form.non_field_errors }} {{ form.info }}
+
+    <div class="flex items-center gap-3 pt-4">
+      <button type="submit">Save</button>
+      <a href="{{ request.META.HTTP_REFERER }}" class="button gray"> Cancel </a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
