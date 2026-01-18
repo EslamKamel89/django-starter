@@ -1,3 +1,4 @@
+from allauth.account.models import EmailAddress
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -59,10 +60,12 @@ class EmailChangeView(LoginRequiredMixin, View):
         return redirect(reverse("home"))
 
     def post(self, request: HttpRequest):
-        print("user", request.user)
-        print("post", request.POST)
         form = EmailForm(instance=request.user, data=request.POST)  # type: ignore
         if form.is_valid():
+            email = form.cleaned_data.get("email")
+            if User.objects.filter(email=email).exclude(id=request.user.id).exists():
+                messages.warning(request, "Email is already in use")
+                return redirect(reverse("profile-settings"))
             form.save()
             messages.success(request, "Email updated successfully")
             return redirect(reverse("profile-settings"))
