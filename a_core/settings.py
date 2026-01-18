@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "crispy_tailwind",
     "a_home",
     "a_users",
+    "django_cleanup.apps.CleanupConfig",  # always put last
 ]
 
 MIDDLEWARE = [
