@@ -1,4 +1,6 @@
+<!--prettier-ignore-->
 {% load static %}
+{% load django_htmx %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -20,9 +22,14 @@
       crossorigin="anonymous"
     />
     <title>{% block title %} {% endblock %}</title>
+    <!--prettier-ignore-->
     {% block css %} {% endblock %}
+    {% htmx_script %}
   </head>
-  <body class="{% block class %}{% endblock %}">
+  <body
+    class="{% block class %}{% endblock %}"
+    hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'
+  >
     {% include 'partials/navbar.html' %}
 
     <content class="block w-full">
