@@ -24,8 +24,12 @@ class ProfileForm(forms.ModelForm):
         self.helper.form_method = "POST"
         self.helper.form_class = "space-y-4 max-w-lg mx-auto"
         self.helper.layout = Layout(
-            Field("image", css_class="block w-full"),
-            Field("display_name", css_class=INPUT_STYLES),
+            Field(
+                "image",
+                css_class="hidden",
+                **{"x-on:change": "previewAvatar(event)", "x-ref": "avatarInput"},
+            ),
+            Field("display_name", css_class=INPUT_STYLES, **{"x-model": "displayName"}),
             Field("info", css_class=INPUT_STYLES, rows=4),
             Submit("submit", "Save Profile", css_class=SUBMIT_STYLES),
         )
