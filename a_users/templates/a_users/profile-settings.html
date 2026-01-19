@@ -41,7 +41,7 @@
     <!-- Verification -->
     <tr>
       <th scope="row" class="pb-5"></th>
-      <td class="px-6 pb-5">
+      <td class="px-6 py-5">
         {% if user.emailaddress_set.first.verified %}
         <span class="inline-flex items-center gap-2 text-success font-semibold">
           Verified
@@ -53,11 +53,14 @@
         {% endif %}
       </td>
 
-      <td class="px-6 pb-5 text-right">
+      <td class="px-6 py-5 text-right">
         {% if not user.emailaddress_set.first.verified %}
-        <a href="" class="text-accent font-semibold hover:underline">
+        <form action="{% url 'email-verify' %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="!bg-white !p-0 text-accent font-semibold hover:underline">
+        </form>
           Verify
-        </a>
+        </button>
         {% endif %}
       </td>
     </tr>
