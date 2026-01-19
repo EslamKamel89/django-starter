@@ -63,7 +63,7 @@ class EmailChangeView(LoginRequiredMixin, View):
         form = EmailForm(instance=request.user, data=request.POST)  # type: ignore
         if form.is_valid():
             email = form.cleaned_data.get("email")
-            if User.objects.filter(email=email).exclude(id=request.user.id).exists():
+            if User.objects.filter(email=email).exclude(id=request.user.id).exists():  # type: ignore
                 messages.warning(request, "Email is already in use")
                 return redirect(reverse("profile-settings"))
             form.save()
