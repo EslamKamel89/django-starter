@@ -25,7 +25,7 @@ def sync_email_address(sender, instance: User, created, **kwargs):
     email_address = EmailAddress.objects.filter(user=instance, primary=True).first()
     if email_address and email_address.email == instance.email:
         return
-    EmailAddress.objects.filter(user=instance).update(primary=False)
+    EmailAddress.objects.filter(user=instance).update(primary=False, verified=False)
     email_address, _ = EmailAddress.objects.update_or_create(
         user=instance,
         email=instance.email,

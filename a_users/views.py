@@ -84,3 +84,24 @@ class EmailChangeView(LoginRequiredMixin, View):
             return redirect(reverse("profile-settings"))
         messages.error(request, "Please fix the validation error")
         return redirect(reverse("profile-settings"))
+
+
+class SendConfirmationEmailView(LoginRequiredMixin, View):
+    def post(self, request: HttpRequest):
+        user: User = request.user  # type: ignore
+        email_address = EmailAddress.objects.filter(
+            user=user, email=user.email, primary=True
+        ).first()
+        if email_address is None:
+            messages.error(
+                request,
+                "No email address found to verify. Please update your email first.",
+            )
+        elif email_address.verified:
+            messages.info(request, "Your email address is already verified.")
+        else:
+            email_address.send_confirmation(request)
+            messages.success(
+                request, "Verification email sent. Please check your inbox."
+            )
+        return redirect(reverse("profile-settings"))
