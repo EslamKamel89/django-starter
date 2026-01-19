@@ -63,11 +63,23 @@ class EmailChangeView(LoginRequiredMixin, View):
         form = EmailForm(instance=request.user, data=request.POST)  # type: ignore
         if form.is_valid():
             email = form.cleaned_data.get("email")
-            if User.objects.filter(email=email).exclude(id=request.user.id).exists():  # type: ignore
+            if email == request.user.email:  # type: ignore
+                messages.info(request, "This is already your current email address")
+                return redirect(reverse("profile-settings"))
+            if EmailAddress.objects.filter(email=email).exclude(id=request.user.id).exists():  # type: ignore
                 messages.warning(request, "Email is already in use")
                 return redirect(reverse("profile-settings"))
             form.save()
-            messages.success(request, "Email updated successfully")
+            email_address = EmailAddress.objects.filter(
+                user=request.user,
+                email=email,
+                primary=True,
+            ).first()
+            if email_address:
+                email_address.send_confirmation(request)
+            messages.success(
+                request, "Email updated. Please check your inbox to verify it."
+            )
             return redirect(reverse("profile-settings"))
         messages.error(request, "Please fix the validation error")
         return render(request, "a_users/partials/email-form.html", {"form": form})
