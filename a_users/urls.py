@@ -17,4 +17,5 @@ urlpatterns: list[URLPattern] = [
         views.SendConfirmationEmailView.as_view(),
         name="email-verify",
     ),
+    path("delete-account", views.DeleteAccountView.as_view(), name="delete-account"),
 ]

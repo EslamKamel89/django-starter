@@ -1,5 +1,6 @@
 from allauth.account.models import EmailAddress
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpRequest
@@ -105,3 +106,14 @@ class SendConfirmationEmailView(LoginRequiredMixin, View):
                 request, "Verification email sent. Please check your inbox."
             )
         return redirect(reverse("profile-settings"))
+
+
+class DeleteAccountView(LoginRequiredMixin, View):
+    def get(self, request: HttpRequest):
+        return render(request, "a_users/profile-delete.html")
+
+    def post(self, request: HttpRequest):
+        user: User = request.user  # type: ignore
+        logout(request)
+        user.delete()
+        return redirect(reverse("home"))
