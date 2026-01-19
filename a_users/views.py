@@ -60,18 +60,19 @@ class EmailChangeView(LoginRequiredMixin, View):
         return redirect(reverse("home"))
 
     def post(self, request: HttpRequest):
-        form = EmailForm(instance=request.user, data=request.POST)  # type: ignore
+        user: User = request.user  # type: ignore
+        if request.POST.get("email") == user.email:
+            messages.info(request, "This is already your current email address")
+            return redirect(reverse("profile-settings"))
+        form = EmailForm(instance=user, data=request.POST)
         if form.is_valid():
             email = form.cleaned_data.get("email")
-            if email == request.user.email:  # type: ignore
-                messages.info(request, "This is already your current email address")
-                return redirect(reverse("profile-settings"))
-            if EmailAddress.objects.filter(email=email).exclude(id=request.user.id).exists():  # type: ignore
+            if EmailAddress.objects.filter(email=email).exclude(user=user).exists():  # type: ignore
                 messages.warning(request, "Email is already in use")
                 return redirect(reverse("profile-settings"))
             form.save()
             email_address = EmailAddress.objects.filter(
-                user=request.user,
+                user=user,
                 email=email,
                 primary=True,
             ).first()
@@ -82,4 +83,4 @@ class EmailChangeView(LoginRequiredMixin, View):
             )
             return redirect(reverse("profile-settings"))
         messages.error(request, "Please fix the validation error")
-        return render(request, "a_users/partials/email-form.html", {"form": form})
+        return redirect(reverse("profile-settings"))
